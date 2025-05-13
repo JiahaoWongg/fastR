@@ -256,7 +256,7 @@ dotplotGO  <- function(data, size = 28, padj = TRUE,
  
     # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + gg_style(25)\ 
     loadp(ggplot2, ggthemes) 
-    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, graph.theme = "bw") 
+    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, theme = "bw") 
     if(padj){ 
         p <- p + geom_point(aes(color = p.adjust, size = Count)) 
         p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
@@ -304,7 +304,7 @@ dotplotKEGG  <- function(data, size = 28, padj = TRUE, out = NULL, w = NULL, h =
  
     # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + gg_style(25)\ 
     loadp(ggthemes) 
-    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, graph.theme = "bw") 
+    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, theme = "bw") 
     if(padj){ 
         p <- p + geom_point(aes(color = p.adjust, size = Count)) 
         p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
