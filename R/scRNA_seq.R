@@ -167,7 +167,7 @@ sc_VolcanoPlot <- function(diff,
           legend.margin=margin(b= -10, unit = "pt"), 
           plot.title = element_text(hjust = 0.5, size=10) 
           ) + 
-    coord_flip() + setText(20) 
+    coord_flip() + gg_style(20) 
  
     no_up = length(which(diff$log2FoldChange > log2FC & diff$padj < padj)) == 0 
     no_dn = length(which(diff$log2FoldChange < (-log2FC) & diff$padj < padj)) == 0 
@@ -273,7 +273,7 @@ sc_dotplot_general <- function(obj, group, file){
      
     obj = ScaleData(obj, features = markers) 
     p <- DotPlot(obj, group.by = group, features = markers) + coord_flip() 
-    p <- p + setText(18) 
+    p <- p + gg_style(18) 
     p <- p + theme(panel.grid = element_blank(), axis.text.x = element_text(hjust = 1,vjust = 0.5)) 
     p <- p + labs(x = NULL, y = NULL) 
     p <- p + scale_color_gradientn(values = seq(0, 1, 0.2), colours = c('#bebcbe', '#E71908')) 
@@ -306,8 +306,8 @@ prepareCounts <- function(outs){
     features = data.table::fread(paste0(outs, "/features.tsv.gz"), data.table = FALSE, header = FALSE) 
     counts = suppressWarnings(cbind(features[, -3], counts)) 
     colnames(counts)[1:2] = c("GeneID", "GeneName") 
-    write("c", counts, file = paste0(outs, "/../counts.txt")) 
-    write("c", counts[1:100, 1:102], file = paste0(outs, "/../counts_100_x_100.txt")) 
+    write2("c", counts, file = paste0(outs, "/../counts.txt")) 
+    write2("c", counts[1:100, 1:102], file = paste0(outs, "/../counts_100_x_100.txt")) 
     invisible(counts) 
 } 
  
@@ -475,7 +475,7 @@ FeaturePlot2  <- function(obj, features, axis = TRUE, miniAxis = FALSE, legend =
     for(feature in features){ 
         pdata$Expression = log2(obj@assays$RNA@counts[feature ,] + 1) 
         p <- ggplot(pdata, aes(UMAP_1, UMAP_2)) 
-        p <- p + geom_point(aes(color = Expression), size = 0.3) + setText(20) 
+        p <- p + geom_point(aes(color = Expression), size = 0.3) + gg_style(20) 
         p <- p + scale_color_continuous(low = "lightgrey", high = "#DE1F1F") 
         p <- p + labs(title = feature) 
         p <- p + guides(color = guide_colorbar(barwidth = unit(0.6, "cm"), barheight = unit(3, "cm"))) 
@@ -582,8 +582,6 @@ multiPara <- function(func, # 要执行的函数
  
     invisible(result) 
 } 
- 
- 
  
 #' @title processSigMarker 
 #' @author Jiahao Wang 

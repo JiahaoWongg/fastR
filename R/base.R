@@ -685,10 +685,10 @@ uid <- function(){
     return(uuid()) 
 } 
  
-#' @title write 
+#' @title write2 
 #' @author Jiahao Wang 
 #' @export
-write <- function(type, data, file, sep = "\t"){ 
+write2 <- function(type, data, file, sep = "\t"){ 
 	if(!type %in% c("rc", "r", "c", "x")) 
 		stop("\nOnly support below types: 
 			\t- rc: save rownames and colnames 

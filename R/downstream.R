@@ -1,8 +1,3 @@
-#' @title `%/%` 
-#' @author Jiahao Wang 
-#' @export
-`%/%` <- function(x, y) as.numeric(x) / as.numeric(y) 
- 
 #' @title write.qc.bsmap 
 #' @author Jiahao Wang 
 #' @export
@@ -49,7 +44,7 @@ write.qc.bsmap <- function(fileIn, fileOut = NULL){
 	if(is.null(fileOut)){ 
 		fileOut = gsub("report.txt", "stat.txt", fileIn) 
 	} 
-	write("c", resT, fileOut) 
+	write2("c", resT, fileOut) 
 	invisible(resT) 
 } 
  
@@ -93,7 +88,7 @@ write.qc.trim_galore <- function(fileIn, fileOut = NULL){
 	if(is.null(fileOut)){ 
 		fileOut = gsub("report.txt", "stat.txt", fileIn) 
 	} 
-	write("c", resT, fileOut) 
+	write2("c", resT, fileOut) 
 	invisible(resT) 
 } 
  

@@ -1913,8 +1913,8 @@ prepareCounts <- function(outs){
     features = data.table::fread(paste0(outs, "/features.tsv.gz"), data.table = FALSE, header = FALSE) 
     counts = suppressWarnings(cbind(features[, -3], counts)) 
     colnames(counts)[1:2] = c("GeneID", "GeneName") 
-    write("c", counts, file = paste0(outs, "/../counts.txt")) 
-    write("c", counts[1:100, 1:102], file = paste0(outs, "/../counts_100_x_100.txt")) 
+    write2("c", counts, file = paste0(outs, "/../counts.txt")) 
+    write2("c", counts[1:100, 1:102], file = paste0(outs, "/../counts_100_x_100.txt")) 
     invisible(counts) 
 } 
  
@@ -4024,7 +4024,7 @@ run_estimate <- function(expM, group = NULL, group_name = "Group", prefix = "./E
     rownames(est_res) = est_res$NAME 
     est_res[, c(1, 2)] = NULL 
     colnames(est_res) = colnames(expM2) 
-    write("rc", est_res, estimate_file) 
+    write2("rc", est_res, estimate_file) 
  
     rdata_file = paste0(prefix, "_estimate_score.RData") 
     save(est_res, file = rdata_file) 
