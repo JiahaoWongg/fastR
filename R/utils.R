@@ -299,7 +299,7 @@ run_survival_lasso <- function(tdata, genes, out_name = "Survial_LASSO", seed = 
     p <- p + geom_hline(yintercept = 0) 
     p <- p + ylab("Coefficients") 
     p <- p + scale_x_continuous(expand = c(0.02, 0.02)) 
-    p <- p + setText(20, theme = "bw") 
+    p <- p + gg_style(20, theme = "bw") 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     if(legend){ 
         p <- p + theme(legend.position = "top") 
@@ -316,7 +316,7 @@ run_survival_lasso <- function(tdata, genes, out_name = "Survial_LASSO", seed = 
     p <- p + geom_errorbar(data = pdata_cv, aes(x = log(lambda), ymin = conf.low, ymax = conf.high)) 
     p <- p + ylab("Coefficients") 
     p <- p + scale_x_continuous(expand = c(0.02, 0.02)) 
-    p <- p + setText(20, theme = "bw") 
+    p <- p + gg_style(20, theme = "bw") 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     p <- p + annotate("text", x = best_lamda, y = text_y, label = paste("Optimal Lambda =", signif(cvfit$lambda.min, 4))) 
     p <- p + geom_vline(xintercept = best_lamda, color = "grey60", alpha = 0.8, linetype = 2)    
@@ -373,7 +373,7 @@ plot_coefficient_barplot <- function(multi_res, pvalue_cut = 0.05, out_name = "C
     p <- ggbarplot(multi_res, x="gene", y="coef", fill = "group", color = "white", 
                    palette = c("#00AFBB", "#E7B800"), sort.val = "desc", sort.by.groups = FALSE, 
                    x.text.angle=90, ylab = "Coefficient", xlab = "Genes", rotate=TRUE) 
-    p <- p + setText(20, theme = "bw", y.title.vjust = 2) + theme(legend.position = "none") 
+    p <- p + gg_style(20, theme = "bw", y.title.vjust = 2) + theme(legend.position = "none") 
     save.graph(p, file = paste0(out_name, "_Coefficient_barplot"), 5, 6) 
     write.csv(multi_res, ) 
     return(p) 
@@ -446,9 +446,9 @@ assessment_survial_model <- function(
     text_P  = paste(" =", formatC(summary(res_cox)$coef[5], format = "e", digits = 2)) 
     p$plot <- p$plot + annotate("text", x = label.x, y = label.y, size = 6, hjust = 0, label = bquote(italic("P") * .(text_P))) 
     p$plot <- p$plot + annotate("text", x = label.x, y = label.y - 0.1, size = 4, hjust = 0, label = paste0(text_HR, ", ", text_CI)) 
-    p$plot <- p$plot + setText(20, y.title.vjust = 3) + theme(legend.title = element_text(size = 15), legend.position = "top") 
+    p$plot <- p$plot + gg_style(20, y.title.vjust = 3) + theme(legend.title = element_text(size = 15), legend.position = "top") 
  
-    p$table <- p$table + setText(20, y.title.vjust = 3) + theme(plot.title = element_text(hjust = 0, face = "plain")) 
+    p$table <- p$table + gg_style(20, y.title.vjust = 3) + theme(plot.title = element_text(hjust = 0, face = "plain")) 
     p$table <- p$table + theme(axis.text.y = element_text(color = rev(km_cols))) 
  
     loadp(patchwork) 
@@ -786,7 +786,7 @@ DimPlot2 <- function(obj,
                   y = paste0(axis_title, "_2"), 
                   title = paste0(title, " (n = ", format(ncol(obj), big.mark = ","), ")")) 
     p <- p + theme(plot.title = element_text(size = cex / 20 * 18, face = "plain")) 
-    p <- p + setText(cex) 
+    p <- p + gg_style(cex) 
  
     if(label){ 
         if(label.fill == "auto"){ 
@@ -893,7 +893,7 @@ gg_style <- function(title.size   = 10,
     if(!is.null(fill))  p <- p + scale_fill_manual(values = fill) 
     return(p) 
 }  
-setText <- gg_style 
+gg_style <- gg_style 
  
 # prepare_gdc_download <- function 
 #' @title sort_by2 
@@ -1478,7 +1478,7 @@ sc_pipeline <- function(obj_raw, npc = 30, ncluster = c(14, 16), resolution = 0.
     plotL = list() 
     for(feature in features){ 
         p <- suppressWarnings(VlnPlot(obj_raw, features = feature, cols = col.cluster2.1, pt.size = 0.1, ncol = 1)) 
-        p <- p + setText(25, x.text.angle = 90) 
+        p <- p + gg_style(25, x.text.angle = 90) 
         p <- p + theme(legend.position = "none") + labs(x = "") 
         plotL[[feature]] <- p 
     } 
@@ -1496,7 +1496,7 @@ sc_pipeline <- function(obj_raw, npc = 30, ncluster = c(14, 16), resolution = 0.
     plotL = list() 
     for(feature in features){ 
         p <- suppressWarnings(VlnPlot(obj_qc, features = feature, cols = col.cluster2.1, pt.size = 0.1, ncol = 1)) 
-        p <- p + setText(25, x.text.angle = 90) 
+        p <- p + gg_style(25, x.text.angle = 90) 
         p <- p + theme(legend.position = "none") + labs(x = "") 
         plotL[[feature]] <- p 
     } 
@@ -1541,14 +1541,14 @@ sc_pipeline <- function(obj_raw, npc = 30, ncluster = c(14, 16), resolution = 0.
  
     p <- DimPlot(obj, reduction = "umap", label = FALSE, group.by = sample_name)  
     p <- p + labs(title = "UMAP by Sample") 
-    p <- p + setText(20, y.title.vjust = 3) 
+    p <- p + gg_style(20, y.title.vjust = 3) 
     p <- p + scale_color_manual(values = col.cluster2.1, name = "Sample") 
     save.graph(p, file = paste0(out_name, "_07_UMAP_by_Sample"), 7, 6) 
  
     if(tSNE){ 
         p <- DimPlot(obj, reduction = "tsne", label = FALSE, group.by = sample_name)  
         p <- p + labs(title = "tSNE by Sample") 
-        p <- p + setText(20, y.title.vjust = 3) 
+        p <- p + gg_style(20, y.title.vjust = 3) 
         p <- p + scale_color_manual(values = col.cluster2.1, name = "Sample") 
         save.graph(p, file = paste0(out_name, "_07_tSNE_by_Sample"), 7, 6) 
     } 
@@ -1556,7 +1556,7 @@ sc_pipeline <- function(obj_raw, npc = 30, ncluster = c(14, 16), resolution = 0.
     obj$Cluster = obj$seurat_clusters 
     p <- DimPlot(obj, reduction = "umap", label = FALSE, group.by = "Cluster")  
     p <- p + labs(title = "UMAP by Cluster") 
-    p <- p + setText(20, y.title.vjust = 3) 
+    p <- p + gg_style(20, y.title.vjust = 3) 
     p <- p + scale_color_manual(values = col.cluster2.1, name = "Cluster") 
     save.graph(p, file = paste0(out_name, "_08_UMAP_by_Cluster"), 7, 6) 
  
@@ -1564,7 +1564,7 @@ sc_pipeline <- function(obj_raw, npc = 30, ncluster = c(14, 16), resolution = 0.
         obj$Cluster = obj$seurat_clusters 
         p <- DimPlot(obj, reduction = "tsne", label = FALSE, group.by = "Cluster")  
         p <- p + labs(title = "tSNE by Cluster") 
-        p <- p + setText(20, y.title.vjust = 3) 
+        p <- p + gg_style(20, y.title.vjust = 3) 
         p <- p + scale_color_manual(values = col.cluster2.1, name = "Cluster") 
         save.graph(p, file = paste0(out_name, "_08_tSNE_by_Cluster"), 7, 6) 
     } 
@@ -1773,7 +1773,7 @@ sc_VolcanoPlot <- function(diff,
           legend.margin=margin(b= -10, unit = "pt"), 
           plot.title = element_text(hjust = 0.5, size=10) 
           ) + 
-    coord_flip() + setText(20) 
+    coord_flip() + gg_style(20) 
  
     no_up = length(which(diff$log2FoldChange > log2FC & diff$padj < padj)) == 0 
     no_dn = length(which(diff$log2FoldChange < (-log2FC) & diff$padj < padj)) == 0 
@@ -1880,7 +1880,7 @@ sc_dotplot_general <- function(obj, group, file, PDF = TRUE, PNG = TRUE, species
      
     obj = ScaleData(obj, features = markers, verbose = FALSE) 
     p <- DotPlot(obj, group.by = group, features = markers) + coord_flip() 
-    p <- p + setText(18) 
+    p <- p + gg_style(18) 
     p <- p + theme(panel.grid = element_blank(), axis.text.x = element_text(hjust = 1,vjust = 0.5)) 
     p <- p + labs(x = NULL, y = NULL) 
     p <- p + scale_color_gradientn(values = seq(0, 1, 0.2), colours = c('#bebcbe', '#E71908')) 
@@ -2081,7 +2081,7 @@ FeaturePlot2  <- function(obj, reduction = "umap", features, axis = TRUE, miniAx
     for(feature in features){ 
         pdata$Expression = log2(obj@assays$RNA@counts[feature ,] + 1) 
         p <- ggplot(pdata, aes(data_x, data_y)) 
-        p <- p + geom_point(aes(color = Expression), size = 0.3) + setText(20) 
+        p <- p + geom_point(aes(color = Expression), size = 0.3) + gg_style(20) 
         p <- p + scale_color_continuous(low = "lightgrey", high = "#DE1F1F") 
         p <- p + labs(title = feature) 
         p <- p + guides(color = guide_colorbar(barwidth = unit(0.6, "cm"), barheight = unit(3, "cm"))) 
@@ -2963,7 +2963,7 @@ run_ML_Lasso <- function(expM, Group, out_name = "Lasso", lambda = "min", seed =
     p <- p + ylab("Coefficients") 
     p <- p + scale_x_continuous(expand = c(0.02, 0.02)) 
     p <- p + scale_color_manual(name = "Genes", values = col.cluster2.1) 
-    p <- p + setText(20, theme = "bw") 
+    p <- p + gg_style(20, theme = "bw") 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     if(legend){ 
         p <- p + theme(legend.position = "top") 
@@ -2981,7 +2981,7 @@ run_ML_Lasso <- function(expM, Group, out_name = "Lasso", lambda = "min", seed =
     p <- p + geom_errorbar(data = pdata_cv, aes(x = log(lambda), ymin = conf.low, ymax = conf.high)) 
     p <- p + ylab("Coefficients") 
     p <- p + scale_x_continuous(expand = c(0.02, 0.02)) 
-    p <- p + setText(20, theme = "bw") 
+    p <- p + gg_style(20, theme = "bw") 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     p <- p + annotate("text", x = best_lamda, y = text_y, label = paste("Optimal Lambda =", signif(cvfit$lambda.min, 4))) 
     p <- p + geom_vline(xintercept = best_lamda, color = "grey60", alpha = 0.8, linetype = 2) 
@@ -3114,7 +3114,7 @@ run_PCA <- function(expM, Group, out_name = NULL, text.size = 20, pt.size = 1,
     p <- p + geom_hline(yintercept = 0, lty = 4, col = "black", lwd = 0.6) 
     p <- p + geom_vline(xintercept = 0, lty = 4, col = "black", lwd = 0.6) 
     p <- p + guides(color = guide_legend(override.aes = list(size = 2))) 
-    p <- p + setText(text.size, theme = "bw") + theme(legend.position = "top") 
+    p <- p + gg_style(text.size, theme = "bw") + theme(legend.position = "top") 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     p <- p + scale_color_manual(values = c("firebrick3", "steelblue")) 
     if(ellipse) p <- p + stat_ellipse(aes(x = PC1, y = PC2), linetype = 2, size = 0.5, level = 0.95) 
@@ -3214,7 +3214,7 @@ plot_volcano_limma <- function(
      
     p <- p + geom_point(size = pt.size, alpha = alpha, shape = 21, stroke = 1) 
     p <- p + xlim(x_min, x_max) + ylim(0, ylims) 
-    p <- p + setText(text.cex, theme = "bw", y.title.vjust = 2) 
+    p <- p + gg_style(text.cex, theme = "bw", y.title.vjust = 2) 
     p <- p + theme(plot.title = element_text(hjust = 0.5)) 
     p <- p + theme(legend.position = "top") 
  
@@ -3529,14 +3529,14 @@ barplot2 <- function (data, out = NULL, PDF = TRUE, PNG = TRUE, w = 6, h = 6,
     if (padjust) { 
         data = data[order(data$p.adjust), ] 
         data$Description = factor(data$Description, levels = rev(data$Description)) 
-        p <- ggplot(data) + setTheme() + setText(20) 
+        p <- ggplot(data) + setTheme() + gg_style(20) 
         p <- p + geom_bar(aes(x = Description, y = -log10(p.adjust)),  
             stat = "identity", width = 0.8, fill = fill, alpha = 1) 
     } 
     else { 
         data = data[order(data$pvalue), ] 
         data$Description = factor(data$Description, levels = rev(data$Description)) 
-        p <- ggplot(data) + setTheme() + setText(20) 
+        p <- ggplot(data) + setTheme() + gg_style(20) 
         p <- p + geom_bar(aes(x = Description, y = -log10(pvalue)),  
             stat = "identity", width = 0.8, fill = fill, alpha = 1) 
     } 
@@ -3658,7 +3658,7 @@ plotVolcano <- function (diffM, DIFFcutoff = 2, FDRcutoff = 0.05, title = "Volca
         p <- p + theme_bw() + labs(title = title, x = xtitle,  
             y = "-log10(P-value)") 
     } 
-    p <- p + geom_point(size = size) + setText(20) + theme(plot.title = element_text(hjust = 0.5)) 
+    p <- p + geom_point(size = size) + gg_style(20) + theme(plot.title = element_text(hjust = 0.5)) 
     p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
     p <- p + scale_color_manual(values = c(UP = "red", DN = "dodgerblue4",  
         NC = "grey")) 
@@ -3721,7 +3721,7 @@ dotplotGO <- function (data, size = 28, padj = TRUE, outName = NULL, w = NULL,
         ] 
     loadp(ggplot2, ggthemes) 
     p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) +  
-        setText(25, theme = "bw") 
+        gg_style(25, theme = "bw") 
     if (padj) { 
         p <- p + geom_point(aes(color = p.adjust, size = Count)) 
         p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd",  
@@ -4040,7 +4040,7 @@ run_estimate <- function(expM, group = NULL, group_name = "Group", prefix = "./E
                      xlab = "",  
                      ylab = "Relative Enrichment Score",  
                      grouplab = group_name) 
-        p <- p + setText(20, x.text.angle = 35) + theme(legend.position = "top") 
+        p <- p + gg_style(20, x.text.angle = 35) + theme(legend.position = "top") 
         save.graph(p, file = plot_file, 8, 5) 
  
         if(Rplot){ 
@@ -4069,7 +4069,7 @@ run_immune_infiltration <- function(expM, group = NULL, group_name = "Group", ge
                           xlab = "",  
                           ylab = "Relative Enrichment Score",  
                           grouplab = group_name) 
-        p <- p + setText(20, x.text.angle = 45) + theme(legend.position = "top") 
+        p <- p + gg_style(20, x.text.angle = 45) + theme(legend.position = "top") 
         save.graph(p, file = paste0(prefix, "_28_cells"), 8*1.5, 4*1.5) 
  
         if(Rplot){ 
@@ -4107,7 +4107,7 @@ run_check_point <- function(expM, group = NULL, group_name = "Group", gene_list 
                           xlab = "",  
                           ylab = "Relative Gene Expression",  
                           grouplab = group_name) 
-        p <- p + setText(20, x.text.angle = 45) + theme(legend.position = "top") 
+        p <- p + gg_style(20, x.text.angle = 45) + theme(legend.position = "top") 
         save.graph(p, file = paste0(prefix, "_Boxplot"), 8, 5) 
  
         if(Rplot){ 
@@ -4137,7 +4137,7 @@ run_core_pathway <- function(expM, group = NULL, group_name = "Group", gene_list
                           xlab = "",  
                           ylab = "Relative Enrichment Score",  
                           grouplab = group_name) 
-        p <- p + setText(20, x.text.angle = 45) + theme(legend.position = "top") 
+        p <- p + gg_style(20, x.text.angle = 45) + theme(legend.position = "top") 
         save.graph(p, file = paste0(prefix, "_core_biological_pathway"), 8*1.5, 4*1.5) 
  
         if(Rplot){ 

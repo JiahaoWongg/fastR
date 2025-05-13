@@ -57,12 +57,12 @@ barplot2  <- function(data,
 	if(padjust){ 
 		data = data[order(data$p.adjust), ] 
 		data$Description = factor(data$Description, levels = rev(data$Description)) 
-		p <- ggplot(data) + setTheme() + setText(50) 
+		p <- ggplot(data) + setTheme() + gg_style(50) 
 		p <- p + geom_bar(aes(x = Description, y = -log2(p.adjust)), stat = 'identity', width = 0.8, fill = fill, alpha = 1) 
 	} else { 
 		data = data[order(data$pvalue), ] 
 		data$Description = factor(data$Description, levels = rev(data$Description)) 
-		p <- ggplot(data) + setTheme() + setText(50) 
+		p <- ggplot(data) + setTheme() + gg_style(50) 
 		p <- p + geom_bar(aes(x = Description, y = -log2(pvalue)), stat = 'identity', width = 0.8, fill = fill, alpha = 1) 
  
 	} 
@@ -88,7 +88,7 @@ barplotGO  <- function(data, size = 30){
 	data$GeneRatioValue = as.numeric(subString(data$GeneRatio, 1, "/")) / as.numeric(subString(data$GeneRatio, 2, "/")) 
 	data = data[order(data$GeneRatioValue, decreasing = TRUE), ] 
  
-	p <- ggplot(data) + setTheme() + setText(size) 
+	p <- ggplot(data) + setTheme() + gg_style(size) 
 	p <- p + geom_bar(aes(x = Description, y = -log10(p.adjust)), stat = 'identity', width = 0.8, fill = "#DD1C77", alpha = 1) 
 	p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
 	p <- p + labs(x = "GeneRatio", y = "", title = "") 
@@ -205,7 +205,7 @@ dotplot3  <- function(egoT, top = 20, padjust = TRUE, title = "GO enrichment"){
  
 		p <- ggplot(xdata, aes(x = GeneRatioValue, y = Description)) + theme_bw() 
 		if(padjust){ 
-			p <- p + geom_point(aes(color = p.adjust, size = Count)) + setText(16) 
+			p <- p + geom_point(aes(color = p.adjust, size = Count)) + gg_style(16) 
 			p <- p + scale_colour_gradient(low = "red", high = "blue", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
 		} else{ 
 			p <- p + geom_point(aes(color = pvalue, size = Count))		 
@@ -254,9 +254,9 @@ dotplotGO  <- function(data, size = 28, padj = TRUE,
     data$GeneRatioValue = as.numeric(subString(data$GeneRatio, 1, "/")) / as.numeric(subString(data$GeneRatio, 2, "/")) 
     data = data[order(data$GeneRatioValue, decreasing = TRUE), ] 
  
-    # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + setText(25)\ 
+    # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + gg_style(25)\ 
     loadp(ggplot2, ggthemes) 
-    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + setText(25, graph.theme = "bw") 
+    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, graph.theme = "bw") 
     if(padj){ 
         p <- p + geom_point(aes(color = p.adjust, size = Count)) 
         p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
@@ -302,9 +302,9 @@ dotplotKEGG  <- function(data, size = 28, padj = TRUE, out = NULL, w = NULL, h =
     data$GeneRatioValue = as.numeric(subString(data$GeneRatio, 1, "/")) / as.numeric(subString(data$GeneRatio, 2, "/")) 
     data = data[order(data$GeneRatioValue, decreasing = TRUE), ] 
  
-    # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + setText(25)\ 
+    # p <- ggplot(data, aes(x = 1, y = Description)) + theme_bw() + setTheme() + gg_style(25)\ 
     loadp(ggthemes) 
-    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + setText(25, graph.theme = "bw") 
+    p <- ggplot(data, aes(x = GeneRatioValue, y = Description)) + gg_style(25, graph.theme = "bw") 
     if(padj){ 
         p <- p + geom_point(aes(color = p.adjust, size = Count)) 
         p <- p + scale_colour_gradient(low = "#DD1C77", high = "#3182bd", limit = c(min(data$p.adjust), max(data$p.adjust)), guide = guide_colourbar(reverse = TRUE)) 
@@ -403,7 +403,7 @@ plotVolcano <- function(diffM,
 		p <- p + theme_bw() + labs(title = title, x = xtitle, y = "-log10(P-value)") 
 	} 
  
-	p <- p + geom_point(size = size) + setText(20) + theme(plot.title = element_text(hjust = 0.5)) 
+	p <- p + geom_point(size = size) + gg_style(20) + theme(plot.title = element_text(hjust = 0.5)) 
 	p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 	p <- p + scale_color_manual(values = c("UP" = "red", "DN" = "dodgerblue4", "NC" = "grey")) 
 	p <- p + theme(legend.position = "none") 
@@ -556,7 +556,7 @@ region_plot_chromsome_bar <- function(bed, PDF = NULL, Rplot = TRUE){
     p <- ggplot(countT, aes(chr, count, fill = diff_type)) 
     p <- p + geom_bar(stat = "identity", position = position_dodge(0.75), width = 0.6) 
     p <- p + setTheme() 
-    p <- p + setText(20, x.text.angle = 45, y.title.vjust = 1.5) 
+    p <- p + gg_style(20, x.text.angle = 45, y.title.vjust = 1.5) 
     p <- p + setLimit(y.expand = c(0, 0), y.lim = c(0, Max)) 
     p <- p + labs(x = "", y = "Count of DMRs", title = "") 
     p <- p + scale_fill_manual(values = c("Hyper" = "#CE0977", "Hypo" = "#0457BD")) 
@@ -601,7 +601,7 @@ region_plot_genomic_bar <- function(bed, PDF = NULL, Rplot = TRUE){
     p <- p + geom_bar(stat = 'identity', width = 0.6, colour = "black", position = position_dodge(width = 0.8)) 
     p <- p + labs(x = "", y = "Count of DMRs", title = "Genomic Count of DMRs") 
     p <- p + setTheme() 
-    p <- p + setText(20, x.text.angle = 45, y.title.vjust = 1.5) 
+    p <- p + gg_style(20, x.text.angle = 45, y.title.vjust = 1.5) 
     p <- p + setLimit(y.expand = c(0, 0), y.lim = c(0, Max)) 
     p <- p + theme(legend.position = "none") 
     p <- p + scale_fill_manual(values = rev(col.cluster2.1[1:(nrow(countT)/2)])) 
@@ -647,7 +647,7 @@ region_plot_genomic_stack <- function(bed, PDF = NULL, Rplot = TRUE){
     countT$feature = factor(countT$feature, levels = rev(c('Promoter', 'Exon', 'Intron', 'Intergenic', 'UTR', 'Downstream'))) 
  
     p <- ggplot(countT, aes(x = diff_type, weight = freq, fill = feature)) 
-    p <- p + geom_bar( position = "stack") + coord_flip() + setTheme(grid.major = T) + setText(20) 
+    p <- p + geom_bar( position = "stack") + coord_flip() + setTheme(grid.major = T) + gg_style(20) 
     p <- p + labs(x = "", y = "Percentage(%)", title = "DMRs Genomic Distribution") 
     p <- p + scale_fill_manual(values = rev(col.cluster2.1[1:(nrow(countT)/2)]), name = "Features", breaks = rev(levels(countT$feature)))    # p <- p + scale_fill_manual(values = col.cluster2.1[1:(nrow(countT)/2)], name = "Features", breaks = levels(countT$feature)) 
      
@@ -681,7 +681,7 @@ region_plot_length_bar <- function(bed, PDF = NULL, Rplot = TRUE){
     density <- density(df$length, adjust = 1/5) #调整值使直方图更光滑 
     df.density <- data.frame(x=density$x, y=density$y) 
  
-    p <- ggplot(df, aes(x=length)) + theme_classic() + setText(20) 
+    p <- ggplot(df, aes(x=length)) + theme_classic() + gg_style(20) 
     p <- p + geom_histogram(aes(y=..density..),  binwidth = 10, colour="black", fill="lightblue", alpha=0.5) 
     p <- p 
     p <- p + labs(title = "DMRs Length Distribution", x = "Length", y = "Density") 
@@ -872,86 +872,6 @@ setLimit <- function(x.lim     = 0,
  
 		} 
 	} 
- 
-    return(p) 
-} 
- 
-#' @title setText 
-#' @author Jiahao Wang 
-#' @export
-setText <- function(title.size   = 10, 
-                    title.face = "bold", 
-                    title.hjust = 0.5, 
-                    title.vjust = 0, 
-                    x.title.size = NA, 
-                    x.title.face = NA, 
-                    x.title.vjust = 0.5, 
-                    x.text.size  = NA, 
-                    x.text.angle = 0, 
-                    x.text.hjust = 0.5, 
-                    x.text.vjust = 1, 
-                    y.title.size = NA, 
-                    y.title.vjust = 0, 
-                    y.text.size  = NA, 
-                    face         = "plain", 
-                    y.title.face = NA, 
-                    y.text.angle = 0, 
-                    y.text.hjust = 1, 
-                    graph.theme = "classic" 
-){ 
-	 
-    checkNA <- function(x, y, ratio = NA){ 
-         
-        if(is.na(x)) 
-            if(is.na(ratio)){ 
-                x = y 
-            } else{ 
-                x = y * ratio 
-            } 
-        return(x) 
-    } 
-     
-    x.title.size = checkNA(x.title.size, title.size, 0.8) 
-    y.title.size = checkNA(y.title.size, title.size, 0.8) 
-    x.text.size  = checkNA(x.text.size, title.size, 0.6) 
-    y.text.size  = checkNA(y.text.size, title.size, 0.6) 
-    x.title.face = checkNA(x.title.face, face) 
-    y.title.face = checkNA(y.title.face, face) 
-    if(x.text.angle){ 
-	    if(x.text.hjust != 45){ 
-	        x.text.hjust = 1 
-	    } 
-    } 
-    if(y.text.angle) 
-        y.text.hjust = 1 
-    if(x.text.angle == 90){ 
-    	x.text.vjust = 0.5 
-    } 
- 
-    mytheme = switch(graph.theme, 
-    		"bw" = theme_bw(), 
-    		"classic"  = theme_classic() 
-    		) 
-    p <- mytheme 
-    p <- p + theme(plot.title   = element_text(color = "black", size = title.size, face = title.face, hjust = title.hjust, vjust = title.vjust), 
-               axis.title.x = element_text(color = "black", size = x.title.size, face = x.title.face, vjust = x.title.vjust), 
-               axis.title.y = element_text(color = "black", size = y.title.size, face = y.title.face, vjust = y.title.vjust), 
-               axis.text.x  = element_text(color = "black", size = x.text.size, angle = x.text.angle, hjust = x.text.hjust, vjust = x.text.vjust), 
-               axis.text.y  = element_text(color = "black", size = y.text.size, angle = y.text.angle, hjust = y.text.hjust), 
-               plot.margin  = margin(t = 5.5, r = 5.5, b = 5.5, l = 15, unit = "pt"), 
-               legend.title = element_text(size = unit(x.title.size, "pt")), 
-               legend.key.size = unit(x.text.size, "pt"), 
-               legend.text = element_text(size = unit(x.text.size, "pt"))) 
-    if(graph.theme == "blank"){ 
-    	p <- p + theme(axis.line = element_blank(),  
-    				   axis.text.x = element_blank(), 
-    				   axis.text.y = element_blank(),  
-    				   axis.ticks = element_blank(), 
-    				   axis.title.x = element_blank(), 
-    				   axis.title.y = element_blank(), 
-    				   panel.background = element_blank(), panel.border = element_blank(), panel.grid.major = element_blank(), 
-    				   panel.grid.minor = element_blank(), plot.background = element_blank()) 
-    } 
  
     return(p) 
 } 
